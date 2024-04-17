@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Net;
 using Arduino.Cloud.Exceptions;
 using System.Text;
+using System.Text.Encodings.Web;
 
 namespace Arduino.Cloud
 {
@@ -29,21 +30,13 @@ namespace Arduino.Cloud
         {
             await VerifyAccessToken();
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, CreateFullUrl("/v2/dashboards"));
             Dictionary<string, string> content = new Dictionary<string, string>();
+            QueryBuilder bld = new QueryBuilder();
+            bld.AddIfNotNull("name", name);
+            bld.AddIfNotNull("user_id", userId?.ToString());
 
-            if (name != null)
-            {
-                content.Add("name", name);
-            }
-            if (userId != null)
-            {
-                content.Add("user_id", userId.Value.ToString());
-            }
-
-            request.Content = new FormUrlEncodedContent(content);
-
-            using (HttpResponseMessage response = await _client.SendAsync(request, HttpCompletionOption.ResponseContentRead))
+            using (HttpResponseMessage response = await _client.GetAsync(
+                bld.Build(CreateFullUrl("/v2/dashboards")), HttpCompletionOption.ResponseContentRead))
             {
                 EnsureSuccessStatusCode(response);
 
@@ -52,28 +45,24 @@ namespace Arduino.Cloud
             }
         }
 
-        public async Task<List<DeviceInfo>> GetDeviceList(bool acrossUserIds, string? serial = null, string? tags = null)
+        /// <summary>
+        /// Returns the list of devices associated to the user.
+        /// </summary>
+        /// <param name="acrossUserIds">If true, returns all the devices.</param>
+        /// <param name="serial">Filter by device serial number.</param>
+        /// <param name="tags">Filter by tags.</param>
+        /// <returns>The list of devices associated to the user.</returns>
+        public async Task<List<DeviceInfo>> GetDeviceList(bool acrossUserIds = false, string? serial = null, string? tags = null)
         {
             await VerifyAccessToken();
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, CreateFullUrl("/v2/devices"));
-            Dictionary<string, string> content = new Dictionary<string, string>()
-            {
-                ["across_user_ids"] = acrossUserIds.ToString().ToLower()
-            };
-
-            if (serial != null)
-            {
-                content.Add("serial", serial);
-            }
-            if (tags != null)
-            {
-                content.Add("tags", tags);
-            }
-
-            request.Content = new FormUrlEncodedContent(content);
-
-            using (HttpResponseMessage response = await _client.SendAsync(request, HttpCompletionOption.ResponseContentRead))
+            QueryBuilder bld = new QueryBuilder();
+            bld.Add("across_user_ids", acrossUserIds);
+            bld.AddIfNotNull("serial", serial);
+            bld.AddIfNotNull("tags", tags);
+            
+            using (HttpResponseMessage response = await _client.GetAsync(
+                bld.Build(CreateFullUrl("/v2/devices")), HttpCompletionOption.ResponseContentRead))
             {
                 EnsureSuccessStatusCode(response);
 
@@ -86,9 +75,7 @@ namespace Arduino.Cloud
         {
             await VerifyAccessToken();
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, CreateFullUrl($"/v2/devices/{deviceId}"));
-
-            using (HttpResponseMessage response = await _client.SendAsync(request, HttpCompletionOption.ResponseContentRead))
+            using (HttpResponseMessage response = await _client.GetAsync(CreateFullUrl($"/v2/devices/{deviceId}"), HttpCompletionOption.ResponseContentRead))
             {
                 EnsureSuccessStatusCode(response);
 
@@ -101,9 +88,9 @@ namespace Arduino.Cloud
         {
             await VerifyAccessToken();
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, CreateFullUrl($"/v2/things/{thingId}/properties/{propertyId}"));
-
-            using (HttpResponseMessage response = await _client.SendAsync(request, HttpCompletionOption.ResponseContentRead))
+            using (HttpResponseMessage response = await _client.GetAsync(
+                CreateFullUrl($"/v2/things/{thingId}/properties/{propertyId}"), 
+                HttpCompletionOption.ResponseContentRead))
             {
                 EnsureSuccessStatusCode(response);
 
