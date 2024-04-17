@@ -52,12 +52,12 @@ namespace Arduino.Cloud
         /// <param name="serial">Filter by device serial number.</param>
         /// <param name="tags">Filter by tags.</param>
         /// <returns>The list of devices associated to the user.</returns>
-        public async Task<List<DeviceInfo>> GetDeviceList(bool acrossUserIds = false, string? serial = null, string? tags = null)
+        public async Task<List<DeviceInfo>> GetDeviceList(bool? acrossUserIds = null, string? serial = null, string? tags = null)
         {
             await VerifyAccessToken();
 
             QueryBuilder bld = new QueryBuilder();
-            bld.Add("across_user_ids", acrossUserIds);
+            bld.AddIfNotNull("across_user_ids", acrossUserIds);
             bld.AddIfNotNull("serial", serial);
             bld.AddIfNotNull("tags", tags);
             

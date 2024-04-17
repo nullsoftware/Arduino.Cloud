@@ -28,6 +28,14 @@ namespace Arduino.Cloud
             }
         }
 
+        public void AddIfNotNull(string name, bool? value)
+        {
+            if (value != null)
+            {
+                Add(name, value.Value);
+            }
+        }
+
         public string Build(string url)
         {
             if (Count == 0)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Arduino.Cloud
 {
+    // [TODO]: reafactor this
     public interface IApiClientSettings
     {
         string BaseUrl { get; }
