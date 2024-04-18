@@ -10,10 +10,10 @@ namespace Arduino.Cloud.Models
     public enum ConnectionType : short
     {
         WiFi, 
-        ETH,
+        ETH, // Ethernet
         WiFiAndSecret,
-        GSM, 
-        NB, 
-        Lora
+        GSM, // Mobile
+        NB, // Narrowband
+        LoRa // LoRa (from "long range") is a physical proprietary radio communication technique.
     }
 }

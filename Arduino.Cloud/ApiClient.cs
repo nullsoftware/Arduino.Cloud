@@ -26,6 +26,12 @@ namespace Arduino.Cloud
 
         #region Api Methods
 
+        /// <summary>
+        /// Returns the list of dashboards.
+        /// </summary>
+        /// <param name="name">The name of the dashboard.</param>
+        /// <param name="userId">The <b>User ID</b> of the dashboard's owner</param>
+        /// <returns>The list of dashboards.</returns>
         public async Task<List<Dashboard>> GetDashboardList(string? name = null, Guid? userId = null)
         {
             await VerifyAccessToken();
@@ -71,6 +77,11 @@ namespace Arduino.Cloud
             }
         }
 
+        /// <summary>
+        /// Returns the device requested by the user.
+        /// </summary>
+        /// <param name="deviceId">The ID of the device.</param>
+        /// <returns>The device requested by the user.</returns>
         public async Task<DeviceInfo> GetDevice(Guid deviceId)
         {
             await VerifyAccessToken();
@@ -84,6 +95,12 @@ namespace Arduino.Cloud
             }
         }
 
+        /// <summary>
+        /// Returns the property requested by the user.
+        /// </summary>
+        /// <param name="propertyId">The ID of the property.</param>
+        /// <param name="thingId">The ID of the thing.</param>
+        /// <returns>The property requested by the user.</returns>
         public async Task<Property> GetProperty(Guid propertyId, Guid thingId)
         {
             await VerifyAccessToken();
@@ -99,6 +116,13 @@ namespace Arduino.Cloud
             }
         }
 
+        /// <summary>
+        /// Publishes a property value to MQTT.
+        /// </summary>
+        /// <param name="propertyId">The ID of the property.</param>
+        /// <param name="thingId">The ID of the thing.</param>
+        /// <param name="payload">New property value data.</param>
+        /// <returns></returns>
         public async Task PublishValue(Guid propertyId, Guid thingId, PropertyPayload payload)
         {
             await VerifyAccessToken();

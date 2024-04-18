@@ -15,7 +15,7 @@ namespace Arduino.Cloud.Models
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("id")]
-        public string? Id { get; set; }
+        public Guid? Id { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; } = string.Empty;

@@ -28,6 +28,6 @@ namespace Arduino.Cloud.Models
         public bool IsThingVisible { get; set; }
 
         [JsonPropertyName("thingId")]
-        public string ThingId { get; set; } = string.Empty;
+        public Guid? ThingId { get; set; }
     }
 }

@@ -9,8 +9,9 @@ namespace Arduino.Cloud.Models
 {
     public class Widget
     {
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("id")]
-        public string Id { get; set; } = string.Empty;
+        public Guid? Id { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; } = string.Empty;
