@@ -9,7 +9,7 @@ using System.Text.Encodings.Web;
 
 namespace Arduino.Cloud
 {
-    public class ApiClient
+    public class ApiClient : IDisposable
     {
         private readonly HttpClient _client;
         private readonly IApiClientSettings _settings;
@@ -22,6 +22,12 @@ namespace Arduino.Cloud
             _credentialsProvider = credentialsProvider;
             _settings = settings ?? ApiClientSettings.Default;
             _client = client ?? new HttpClient();
+        }
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            _client.Dispose();
         }
 
         #region Api Methods
