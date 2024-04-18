@@ -62,6 +62,13 @@ namespace Arduino.Cloud.Models
         [JsonPropertyName("user_id")]
         public Guid? UserId { get; set; }
 
+        /// <summary>
+        /// The version of the NINA/WIFI101 firmware running on the device.
+        /// </summary>
+        [JsonPropertyName("wifi_fw_version")]
+        public string? WiFiFirmwareVersion { get; set; }
+
+
         public override string ToString()
         {
             return $"DeviceInfo: {Name}";

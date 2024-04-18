@@ -32,6 +32,10 @@ namespace Arduino.Cloud.Models
         /// </summary>
         /// <param name="value">The property value.</param>
         /// <param name="deviceId">The device who send the property.</param>
+        /// <remarks>
+        /// If if you want to notify your device that property is updated/changed
+        /// leave <paramref name="deviceId"/> null.
+        /// </remarks>
         public PropertyPayload(object value, Guid? deviceId = null)
         {
             Value = value;
